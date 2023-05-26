@@ -23,3 +23,7 @@ export default function JokesIndexRoute() {
     </div>
   );
 }
+
+export function ErrorBoundary() {
+  return <div className="error-container">Error loading data</div>;
+}
