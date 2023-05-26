@@ -5,6 +5,7 @@ import {
   Outlet,
   useRouteError,
   isRouteErrorResponse,
+  Scripts,
 } from "@remix-run/react";
 import type { PropsWithChildren } from "react";
 
@@ -40,6 +41,7 @@ function Document({
       </head>
       <body>
         {children}
+        <Scripts />
         <LiveReload />
       </body>
     </html>
