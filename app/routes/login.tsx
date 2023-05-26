@@ -5,6 +5,7 @@ import { badRequest } from "~/utils/request.server";
 
 import stylesUrl from "~/styles/login.css";
 import type { ActionArgs } from "@remix-run/node";
+import { login } from "~/utils/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesUrl },
@@ -68,6 +69,15 @@ export const action = async ({ request }: ActionArgs) => {
     case "login": {
       // login to get the user
       // if there's no user, return the fields and a formError
+      const user = await login({ password, username });
+      console.log({ user });
+      if (!user) {
+        return badRequest({
+          fieldErrors: null,
+          fields,
+          formError: "Username / Password is incorrect",
+        });
+      }
       // if there is a user, create their session and redirect to /jokes
       return badRequest({
         fieldErrors: null,
