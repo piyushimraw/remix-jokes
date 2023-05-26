@@ -5,7 +5,7 @@ import { badRequest } from "~/utils/request.server";
 
 import stylesUrl from "~/styles/login.css";
 import type { ActionArgs } from "@remix-run/node";
-import { createUserSession, login } from "~/utils/session.server";
+import { createUserSession, login, register } from "~/utils/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesUrl },
@@ -93,11 +93,18 @@ export const action = async ({ request }: ActionArgs) => {
       }
       // create the user
       // create their session and redirect to /jokes
-      return badRequest({
-        fieldErrors: null,
-        fields,
-        formError: "Not implemented",
+      const user = await register({
+        username,
+        password,
       });
+      if (!user) {
+        return badRequest({
+          fieldErrors: null,
+          fields,
+          formError: "Something went wrong during registration",
+        });
+      }
+      return createUserSession(user.id, redirectTo);
     }
     default: {
       return badRequest({
