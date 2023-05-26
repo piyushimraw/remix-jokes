@@ -2,11 +2,9 @@ import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
-  Meta,
   Outlet,
-  Scripts,
-  ScrollRestoration,
   useRouteError,
+  isRouteErrorResponse,
 } from "@remix-run/react";
 import type { PropsWithChildren } from "react";
 
@@ -60,6 +58,18 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Document title={`${error.status} ${error.statusText}`}>
+        <div className="error-container">
+          <h1>
+            {error.status} {error.statusText}
+          </h1>
+        </div>
+      </Document>
+    );
+  }
 
   return (
     <Document title="Uh-oh!">
