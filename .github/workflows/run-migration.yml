@@ -1,0 +1,20 @@
+name: ⚡️ Run Prisma Migration on Prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Prisma
+        run: npm install -g prisma
+      - name: Run Prisma Migration
+        run: prisma migrate deploy --preview-feature
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}

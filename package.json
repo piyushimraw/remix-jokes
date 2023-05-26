@@ -3,6 +3,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "prisma generate && remix build",
+    "migrate:dev": "prisma migrate dev --preview-feature",
+    "migrate:deploy": "prisma migrate deploy --preview-feature",
     "dev": "remix dev",
     "typecheck": "tsc",
     "postinstall": "prisma generate"
